@@ -144,11 +144,11 @@ const Dropdown = () => {
           return (
             <DropdownItem key={id}>
               <TitleBox
-                condition={isOpen === id && 'opend'}
+                condition={isOpen === id && 'opened'}
                 id={id}
                 onClick={onClick}
               >
-                <DropdownText condition={isOpen === id && 'opend'} id={id}>
+                <DropdownText condition={isOpen === id && 'opened'} id={id}>
                   {list}
                 </DropdownText>
                 <FontAwesomeIcon
@@ -219,6 +219,7 @@ const DropdownText = styled.span`
 
 const ContentBox = styled.div`
   padding-bottom: 20px;
+  border-bottom: ${({ theme }) => theme.globalBoardStyle};
 `;
 
 const ContentList = styled.ul`

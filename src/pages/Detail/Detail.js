@@ -4,13 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Carousel from './Carousel';
 import AlertModal from './AlertModal';
 import FloatingPrice from './FloatingPrice';
-import useOutSideClick from '../../hooks/useOutSideClick';
-import BuyButton from './components/BuyButton';
-import SellButton from './components/SellButton';
-import { flexBox } from '../../styles/mixin';
-
 import ChartSection from './ChartSection';
 import Dropdown from './Dropdown';
+import BuyButton from './components/BuyButton';
+import SellButton from './components/SellButton';
+import useOutSideClick from '../../hooks/useOutSideClick';
+import { flexBox } from '../../styles/mixin';
 
 const GUIDE_LIST = [
   {

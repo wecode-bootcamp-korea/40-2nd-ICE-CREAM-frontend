@@ -1,33 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import ChartLine from './ChartLine';
 import MoreModal from './MoreModal';
 import useOutSideClick from '../../hooks/useOutSideClick';
 import { flexBox } from '../../styles/mixin';
-
-const CHART_SELLLIST = [
-  { id: 1, size: '260', price: 200000, date: '22/12/28' },
-  { id: 2, size: '270', price: 320000, date: '22/12/28' },
-  { id: 3, size: '280', price: 420000, date: '22/12/28' },
-  { id: 4, size: '240', price: 430000, date: '22/12/28' },
-  { id: 5, size: '250', price: 420000, date: '22/12/28' },
-];
-
-const CHART_BUYLIST = [
-  { id: 1, size: '260', price: 380000, date: '22/12/28' },
-  { id: 2, size: '270', price: 390000, date: '22/12/28' },
-  { id: 3, size: '250', price: 320000, date: '22/12/28' },
-  { id: 4, size: '270', price: 320000, date: '22/12/28' },
-  { id: 5, size: '280', price: 340000, date: '22/12/28' },
-];
-
-const CHART_SOLDLIST = [
-  { id: 1, size: '280', price: 530000, date: '22/12/28' },
-  { id: 2, size: '240', price: 420000, date: '22/12/28' },
-  { id: 3, size: '240', price: 540000, date: '22/12/28' },
-  { id: 4, size: '250', price: 520000, date: '22/12/28' },
-  { id: 5, size: '270', price: 480000, date: '22/12/28' },
-];
 
 const CHART_FILTERLIST = [
   { id: 1, list: '1개월' },
@@ -38,20 +14,28 @@ const CHART_FILTERLIST = [
 ];
 
 const CHART_DEALLIST = [
-  { id: 6, list: '체결 거래', data: CHART_SOLDLIST },
-  { id: 7, list: '판매 입찰', data: CHART_SELLLIST },
-  { id: 8, list: '구매 입찰', data: CHART_BUYLIST },
+  { id: 6, list: '체결 거래', data: 'soldList' },
+  { id: 7, list: '판매 입찰', data: 'sellList' },
+  { id: 8, list: '구매 입찰', data: 'buyList' },
 ];
 
 const ChartSection = () => {
   const [isFilterClicked, setIsFilterClicked] = useState(5);
   const [isDealClicked, setIsDealClicked] = useState(6);
-  const [isLoadData, setIsLoadData] = useState([...CHART_SOLDLIST]);
-
   const [isMoreOpen, setIsMoreClicked] = useState(false);
+
+  const [tableData, setTableData] = useState({});
+  const [loadData, setLoadData] = useState(tableData.soldList);
 
   const ref = useRef();
 
+  // const CHART_SELECTED = {
+  //   sold: '체결 거래',
+  // };
+
+  // Object.values(CHART_SELECTED).map;
+
+  // TODO : 로직 리팩토링
   const onFilterClick = ({ target }) => {
     if (isFilterClicked === Number(target.id)) {
       return;
@@ -62,16 +46,32 @@ const ChartSection = () => {
   };
 
   const onDealClick = (id, data) => {
-    if (isDealClicked === Number(id)) {
-      return;
-    }
+    if (isDealClicked === Number(id)) return;
     setIsDealClicked(isDealClicked === Number(id) ? null : Number(id));
-    setIsLoadData(data);
+
+    setLoadData(tableData[data]);
   };
 
-  const onMoreClick = () => setIsMoreClicked(true);
+  const onMoreClick = () => {
+    setIsMoreClicked(true);
+    document.body.style.overflow = 'hidden';
+  };
 
-  useOutSideClick(ref, () => setIsMoreClicked(false));
+  useOutSideClick(ref, () => {
+    setIsMoreClicked(false);
+    document.body.style.overflow = 'scroll';
+  });
+
+  useEffect(() => {
+    fetch('/data/chartData.json', {
+      method: 'GET',
+    })
+      .then(response => response.json())
+      .then(result => {
+        setTableData(result[0]);
+        setLoadData(result[0].soldList);
+      });
+  }, []);
 
   return (
     <>
@@ -118,8 +118,8 @@ const ChartSection = () => {
         </ChartTableHead>
 
         <ChartTableBody>
-          {/* TODO : 클릭한 메뉴의 리스트로 변경 */}
-          {isLoadData.map(({ id, size, price, date }) => {
+          {/* TODO : 초기값 설정 */}
+          {loadData?.map(({ id, size, price, date }) => {
             const KRPrice = price.toLocaleString('ko-KR');
             return (
               <tr key={id}>
