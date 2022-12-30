@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ShopProduct = () => {
-  const [shopProductList, setShopProductList] = useState([]);
-
   const navigate = useNavigate();
+  const [shopProductList, setShopProductList] = useState([]);
+  const obsTarget = useRef(null);
 
   const goToDetail = () => {
     navigate('/detail');
@@ -17,6 +17,25 @@ const ShopProduct = () => {
       .then(data => {
         setShopProductList(data);
       });
+  }, []);
+
+  useEffect(() => {
+    const io = new IntersectionObserver(entry => {
+      const target = entry[0];
+      if (target.isIntersecting) {
+        fetch('/data/productData.json')
+          .then(res => res.json())
+          .then(result => {
+            setShopProductList(prev => [...prev, ...result]);
+          });
+      }
+    });
+    if (obsTarget.current) {
+      io.observe(obsTarget.current);
+    }
+    return () => {
+      io.disconnect();
+    };
   }, []);
 
   return (
@@ -34,7 +53,7 @@ const ShopProduct = () => {
         {shopProductList.map(product => {
           const {
             id,
-            thumnailImageUrl,
+            thumbnailImageUrl,
             enName,
             krName,
             brandName,
@@ -43,9 +62,13 @@ const ShopProduct = () => {
           const price = _price.toLocaleString();
 
           return (
-            <ShopProductBox key={id}>
+            <ShopProductBox key={id} className="list">
               <ShopProductThumb>
-                <img src={thumnailImageUrl} alt={enName} onClick={goToDetail} />
+                <img
+                  src={thumbnailImageUrl}
+                  alt={enName}
+                  onClick={goToDetail}
+                />
               </ShopProductThumb>
               <ShopProductBrandTitle>{brandName}</ShopProductBrandTitle>
               <ShopProductTitle>
@@ -58,13 +81,16 @@ const ShopProduct = () => {
           );
         })}
       </ShopProductList>
+      <ProductObserverTarget ref={obsTarget}>Observer</ProductObserverTarget>
     </ShopProductWrapper>
   );
 };
 
 export default ShopProduct;
 
-const ShopProductWrapper = styled.div``;
+const ShopProductWrapper = styled.div`
+  width: 100%;
+`;
 
 const ProductSortSelectBox = styled.div`
   width: 100px;
@@ -142,6 +168,11 @@ const ShopProductCurrentPrice = styled.p`
   margin: 5px 8px;
   font-size: 12px;
   color: ${({ theme }) => theme.mainBrandGray05};
+`;
+
+const ProductObserverTarget = styled.div`
+  width: 100%;
+  height: 300px;
 `;
 
 const SHOP_SELECT_SORT = [

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const MainProduct = () => {
-  const [mainProductData, setMainProductData] = useState([]);
+  const [mainProductList, setMainProductList] = useState([]);
   const navigate = useNavigate();
 
   const goToShop = () => {
@@ -16,29 +16,33 @@ const MainProduct = () => {
     })
       .then(res => res.json())
       .then(data => {
-        setMainProductData(data);
+        setMainProductList(data);
       });
   }, []);
 
   return (
     <MainProductWrapper>
-      {mainProductData.map(product => {
-        const productPrice = product.price.toLocaleString();
+      {mainProductList.map(product => {
+        const {
+          id,
+          thumbnailImageUrl,
+          enName,
+          krName,
+          brandName,
+          price: _price,
+        } = product;
+        const price = _price.toLocaleString();
         return (
-          <MainProductBox key={product.id}>
+          <MainProductBox key={id}>
             <MainProductThumb>
-              <img
-                src={product.thumnailImageUrl}
-                alt={product.enName}
-                onClick={goToShop}
-              />
+              <img src={thumbnailImageUrl} alt={enName} onClick={goToShop} />
             </MainProductThumb>
-            <MainProductBrandTitle>{product.brandName}</MainProductBrandTitle>
+            <MainProductBrandTitle>{brandName}</MainProductBrandTitle>
             <MainProductTitle>
-              <h3>{product.enName}</h3>
-              <h4>{product.krName}</h4>
+              <h3>{enName}</h3>
+              <h4>{krName}</h4>
             </MainProductTitle>
-            <MainProductPrice>{productPrice}원</MainProductPrice>
+            <MainProductPrice>{price}원</MainProductPrice>
             <MainProductCurrentPrice>즉시 구매가</MainProductCurrentPrice>
           </MainProductBox>
         );
@@ -83,7 +87,7 @@ const MainProductBrandTitle = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.mainBrandBlack};
 `;
 
-const MainProductTitle = styled.p`
+const MainProductTitle = styled.div`
   margin: 0px 8px;
   font-size: 14px;
   line-height: 17px;

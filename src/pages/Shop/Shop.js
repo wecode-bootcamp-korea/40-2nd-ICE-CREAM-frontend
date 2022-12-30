@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ShopProduct from './ShopProduct/ShopProduct';
 import styled from 'styled-components';
 
 const Shop = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
+
+  const onClickGoToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      const isTop = window.scrollY < 500;
+      setIsScroll(!isTop);
+    });
+  }, []);
 
   const onClickCategory = () => {
     setIsOpen(!isOpen);
@@ -44,6 +59,7 @@ const Shop = () => {
         })}
       </ShopAsideBox>
       <ShopProduct />
+      {isScroll && <AtTheTop onClick={onClickGoToTop}>&#8593;</AtTheTop>}
     </ShopWrapper>
   );
 };
@@ -59,8 +75,8 @@ const ShopWrapper = styled.div`
 `;
 
 const ShopAsideBox = styled.div`
-  width: 50%;
-  margin-right: 25px;
+  width: 20%;
+  margin-right: 30px;
 `;
 
 const AsideTitle = styled.h1`
@@ -123,6 +139,24 @@ const AsideOpenCategoryLabel = styled.label`
   margin-left: 3px;
   color: ${({ theme }) => theme.mainBrandGray05};
   line-height: 26px;
+`;
+
+const AtTheTop = styled.div`
+  width: 45px;
+  height: 45px;
+  position: fixed;
+  right: 80px;
+  bottom: 50px;
+  font-size: 20px;
+  text-align: center;
+  line-height: 40px;
+  border: 1px solid ${({ theme }) => theme.mainBrandBlack};
+  border-radius: 50%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.mainBrandBlack};
+    color: white;
+  }
 `;
 
 const SHOP_CATEGORY = [
