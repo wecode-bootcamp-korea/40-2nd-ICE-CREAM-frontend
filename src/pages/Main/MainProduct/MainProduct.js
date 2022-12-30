@@ -1,48 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const MainProduct = () => {
-  const [mainProductData, setMainProductData] = useState([]);
   const navigate = useNavigate();
+  const [mainProductList, setMainProductList] = useState([]);
+  const obsTarget = useRef(null);
 
   const goToShop = () => {
     navigate('/shop');
   };
 
   useEffect(() => {
-    fetch('/data/productData.json', {
-      method: 'GET',
-    })
+    fetch('/data/productData.json')
       .then(res => res.json())
       .then(data => {
-        setMainProductData(data);
+        setMainProductList(data);
       });
+  }, []);
+
+  useEffect(() => {
+    const io = new IntersectionObserver(entry => {
+      const target = entry[0];
+      if (target.isIntersecting) {
+        fetch('/data/productData.json')
+          .then(res => res.json())
+          .then(result => {
+            setMainProductList(prev => [...prev, ...result]);
+          });
+      }
+    });
+    if (obsTarget.current) {
+      io.observe(obsTarget.current);
+    }
+    return () => {
+      io.disconnect();
+    };
   }, []);
 
   return (
     <MainProductWrapper>
-      {mainProductData.map(product => {
-        const productPrice = product.price.toLocaleString();
+      {mainProductList.map(product => {
+        const {
+          id,
+          thumbnailImageUrl,
+          enName,
+          krName,
+          brandName,
+          price: _price,
+        } = product;
+        const price = _price.toLocaleString();
         return (
-          <MainProductBox key={product.id}>
+          <MainProductBox key={id}>
             <MainProductThumb>
-              <img
-                src={product.thumnailImageUrl}
-                alt={product.enName}
-                onClick={goToShop}
-              />
+              <img src={thumbnailImageUrl} alt={enName} onClick={goToShop} />
             </MainProductThumb>
-            <MainProductBrandTitle>{product.brandName}</MainProductBrandTitle>
+            <MainProductBrandTitle>{brandName}</MainProductBrandTitle>
             <MainProductTitle>
-              <h3>{product.enName}</h3>
-              <h4>{product.krName}</h4>
+              <h3>{enName}</h3>
+              <h4>{krName}</h4>
             </MainProductTitle>
-            <MainProductPrice>{productPrice}원</MainProductPrice>
+            <MainProductPrice>{price}원</MainProductPrice>
             <MainProductCurrentPrice>즉시 구매가</MainProductCurrentPrice>
           </MainProductBox>
         );
       })}
+      <ProductObserverTarget ref={obsTarget}>Observer</ProductObserverTarget>
     </MainProductWrapper>
   );
 };
@@ -83,7 +106,7 @@ const MainProductBrandTitle = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.mainBrandBlack};
 `;
 
-const MainProductTitle = styled.p`
+const MainProductTitle = styled.div`
   margin: 0px 8px;
   font-size: 14px;
   line-height: 17px;
@@ -108,4 +131,9 @@ const MainProductCurrentPrice = styled.p`
   margin: 5px 8px;
   font-size: 12px;
   color: ${({ theme }) => theme.mainBrandGray05};
+`;
+
+const ProductObserverTarget = styled.div`
+  width: 100%;
+  height: 300px;
 `;
