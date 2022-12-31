@@ -159,59 +159,59 @@ const AtTheTop = styled.div`
   }
 `;
 
-const SHOP_CATEGORY = [
-  {
-    id: 1,
-    title: '카테고리',
-    subTitle: '모든 카테고리',
-    subCategory: [
-      { id: 1, title: 'shoes', text: '신발' },
-      { id: 2, title: 'cloth', text: '의류' },
-      { id: 3, title: 'goods', text: '패션잡화' },
-    ],
-  },
-  {
-    id: 2,
-    title: '성별',
-    subTitle: '모든 성별',
-    subCategory: [
-      { id: 1, title: 'men', text: '남성' },
-      { id: 2, title: 'women', text: '여성' },
-    ],
-  },
-  {
-    id: 3,
-    title: '신발 사이즈',
-    subTitle: '모든 사이즈',
-    subCategory: [
-      { id: 1, text: 230 },
-      { id: 2, text: 240 },
-      { id: 3, text: 250 },
-      { id: 4, text: 260 },
-      { id: 5, text: 270 },
-      { id: 6, text: 280 },
-    ],
-  },
-  {
-    id: 4,
-    title: '의류 사이즈',
-    subTitle: '모든 사이즈',
-    subCategory: [
-      { id: 1, text: 'S' },
-      { id: 2, text: 'M' },
-      { id: 3, text: 'L' },
-      { id: 4, text: 'XL' },
-    ],
-  },
-  {
-    id: 5,
-    title: '가격',
-    subTitle: '모든 가격',
-    subCategory: [
-      { id: 1, text: '10만원 이하' },
-      { id: 2, text: '10만원 - 30만원 이하' },
-      { id: 3, text: '30만원 - 50만원 이하' },
-      { id: 4, text: '50만원 이상' },
-    ],
-  },
-];
+const CATEGORY_FILTER = {
+  category: '카테고리',
+  desc: '모든 카테고리',
+  subCategory: [
+    { id: 1, title: 'shoes', text: '신발' },
+    { id: 2, title: 'cloth', text: '의류' },
+    { id: 3, title: 'goods', text: '패션잡화' },
+  ],
+};
+
+const GENDER_FILTER = {
+  title: '성별',
+  subTitle: '모든 성별',
+  subCategory: [
+    { id: 1, title: 'men', text: '남성' },
+    { id: 2, title: 'women', text: '여성' },
+  ],
+};
+
+const SHOES_FILTER = {
+  id: 3,
+  title: '신발 사이즈',
+  subTitle: '모든 사이즈',
+  subCategory: [
+    { id: 1, text: 230 },
+    { id: 2, text: 240 },
+    { id: 3, text: 250 },
+    { id: 4, text: 260 },
+    { id: 5, text: 270 },
+    { id: 6, text: 280 },
+  ],
+};
+
+const CLOTHING_FILTER = {
+  id: 4,
+  title: '의류 사이즈',
+  subTitle: '모든 사이즈',
+  subCategory: [
+    { id: 1, text: 'S' },
+    { id: 2, text: 'M' },
+    { id: 3, text: 'L' },
+    { id: 4, text: 'XL' },
+  ],
+};
+
+const PRICE_FILTER = {
+  id: 5,
+  title: '가격',
+  subTitle: '모든 가격',
+  subCategory: [
+    { id: 1, text: '10만원 이하' },
+    { id: 2, text: '10만원 - 30만원 이하' },
+    { id: 3, text: '30만원 - 50만원 이하' },
+    { id: 4, text: '50만원 이상' },
+  ],
+};
