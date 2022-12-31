@@ -12,10 +12,10 @@ const ShopProduct = () => {
   };
 
   useEffect(() => {
-    fetch('/data/productData.json')
+    fetch('http://10.58.52.168:8000/products/')
       .then(res => res.json())
       .then(data => {
-        setShopProductList(data);
+        setShopProductList(data.data);
       });
   }, []);
 
@@ -34,18 +34,22 @@ const ShopProduct = () => {
         {shopProductList.map(product => {
           const {
             id,
-            thumnailImageUrl,
+            thumbnailImageUrl,
             enName,
             krName,
             brandName,
             price: _price,
           } = product;
-          const price = _price.toLocaleString();
+          const price = _price.toLocaleString('ko-KR');
 
           return (
             <ShopProductBox key={id}>
               <ShopProductThumb>
-                <img src={thumnailImageUrl} alt={enName} onClick={goToDetail} />
+                <img
+                  src={thumbnailImageUrl}
+                  alt={enName}
+                  onClick={goToDetail}
+                />
               </ShopProductThumb>
               <ShopProductBrandTitle>{brandName}</ShopProductBrandTitle>
               <ShopProductTitle>
@@ -102,7 +106,8 @@ const ShopProductThumb = styled.div`
 
   img {
     width: 100%;
-    object-position: 0px -30px;
+    height: 100%;
+    object-fit: cover;
     cursor: pointer;
   }
 `;

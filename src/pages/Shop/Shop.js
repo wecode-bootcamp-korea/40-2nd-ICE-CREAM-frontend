@@ -60,7 +60,7 @@ const ShopWrapper = styled.div`
 
 const ShopAsideBox = styled.div`
   width: 50%;
-  margin-right: 25px;
+  margin-right: 30px;
 `;
 
 const AsideTitle = styled.h1`
