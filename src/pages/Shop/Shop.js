@@ -1,24 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ShopProduct from './ShopProduct/ShopProduct';
 import styled from 'styled-components';
 
 const Shop = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScroll, setIsScroll] = useState(false);
-
-  const onClickGoToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', () => {
-      const isTop = window.scrollY < 500;
-      setIsScroll(!isTop);
-    });
-  }, []);
 
   const onClickCategory = () => {
     setIsOpen(!isOpen);
@@ -43,7 +28,7 @@ const Shop = () => {
                 subCategory={subCategory}
                 className={`${isOpen ? '' : 'open'}`}
               >
-                {subCategory.map(({ subId, text }) => {
+                {subCategory.title.map(({ subId, text }) => {
                   return (
                     <AsideOpenCategoryItem key={subId}>
                       <AsideOpenCategoryInput id="option" type="checkbox" />
@@ -59,7 +44,6 @@ const Shop = () => {
         })}
       </ShopAsideBox>
       <ShopProduct />
-      {isScroll && <AtTheTop onClick={onClickGoToTop}>&#8593;</AtTheTop>}
     </ShopWrapper>
   );
 };
@@ -75,7 +59,7 @@ const ShopWrapper = styled.div`
 `;
 
 const ShopAsideBox = styled.div`
-  width: 20%;
+  width: 30%;
   margin-right: 30px;
 `;
 
@@ -141,77 +125,59 @@ const AsideOpenCategoryLabel = styled.label`
   line-height: 26px;
 `;
 
-const AtTheTop = styled.div`
-  width: 45px;
-  height: 45px;
-  position: fixed;
-  right: 80px;
-  bottom: 50px;
-  font-size: 20px;
-  text-align: center;
-  line-height: 40px;
-  border: 1px solid ${({ theme }) => theme.mainBrandBlack};
-  border-radius: 50%;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.mainBrandBlack};
-    color: white;
-  }
-`;
-
-const CATEGORY_FILTER = {
-  category: '카테고리',
-  desc: '모든 카테고리',
-  subCategory: [
-    { id: 1, title: 'shoes', text: '신발' },
-    { id: 2, title: 'cloth', text: '의류' },
-    { id: 3, title: 'goods', text: '패션잡화' },
-  ],
-};
-
-const GENDER_FILTER = {
-  title: '성별',
-  subTitle: '모든 성별',
-  subCategory: [
-    { id: 1, title: 'men', text: '남성' },
-    { id: 2, title: 'women', text: '여성' },
-  ],
-};
-
-const SHOES_FILTER = {
-  id: 3,
-  title: '신발 사이즈',
-  subTitle: '모든 사이즈',
-  subCategory: [
-    { id: 1, text: 230 },
-    { id: 2, text: 240 },
-    { id: 3, text: 250 },
-    { id: 4, text: 260 },
-    { id: 5, text: 270 },
-    { id: 6, text: 280 },
-  ],
-};
-
-const CLOTHING_FILTER = {
-  id: 4,
-  title: '의류 사이즈',
-  subTitle: '모든 사이즈',
-  subCategory: [
-    { id: 1, text: 'S' },
-    { id: 2, text: 'M' },
-    { id: 3, text: 'L' },
-    { id: 4, text: 'XL' },
-  ],
-};
-
-const PRICE_FILTER = {
-  id: 5,
-  title: '가격',
-  subTitle: '모든 가격',
-  subCategory: [
-    { id: 1, text: '10만원 이하' },
-    { id: 2, text: '10만원 - 30만원 이하' },
-    { id: 3, text: '30만원 - 50만원 이하' },
-    { id: 4, text: '50만원 이상' },
-  ],
-};
+const SHOP_CATEGORY = [
+  {
+    id: 1,
+    title: '카테고리',
+    subTitle: '모든 카테고리',
+    subCategory: [
+      { id: 1, title: 'shoes', text: '신발' },
+      { id: 2, title: 'cloth', text: '의류' },
+      { id: 3, title: 'goods', text: '패션잡화' },
+    ],
+  },
+  {
+    id: 2,
+    title: '성별',
+    subTitle: '모든 성별',
+    subCategory: [
+      { id: 1, title: 'men', text: '남성' },
+      { id: 2, title: 'women', text: '여성' },
+    ],
+  },
+  {
+    id: 3,
+    title: '신발 사이즈',
+    subTitle: '모든 사이즈',
+    subCategory: [
+      { id: 1, text: 230 },
+      { id: 2, text: 240 },
+      { id: 3, text: 250 },
+      { id: 4, text: 260 },
+      { id: 5, text: 270 },
+      { id: 6, text: 280 },
+    ],
+  },
+  {
+    id: 4,
+    title: '의류 사이즈',
+    subTitle: '모든 사이즈',
+    subCategory: [
+      { id: 1, text: 'S' },
+      { id: 2, text: 'M' },
+      { id: 3, text: 'L' },
+      { id: 4, text: 'XL' },
+    ],
+  },
+  {
+    id: 5,
+    title: '가격',
+    subTitle: '모든 가격',
+    subCategory: [
+      { id: 1, text: '10만원 이하' },
+      { id: 2, text: '10만원 - 30만원 이하' },
+      { id: 3, text: '30만원 - 50만원 이하' },
+      { id: 4, text: '50만원 이상' },
+    ],
+  },
+];

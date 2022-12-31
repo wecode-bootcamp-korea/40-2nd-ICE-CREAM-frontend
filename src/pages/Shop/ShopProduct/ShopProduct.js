@@ -12,9 +12,12 @@ const ShopProduct = () => {
   };
 
   useEffect(() => {
+    // TODO(12/31): 데이터 통신 테스트
+    // fetch('http://10.58.52.168:8000/products/')
     fetch('/data/productData.json')
       .then(res => res.json())
       .then(data => {
+        // setShopProductList(data.data);
         setShopProductList(data);
       });
   }, []);
@@ -23,6 +26,8 @@ const ShopProduct = () => {
     const io = new IntersectionObserver(entry => {
       const target = entry[0];
       if (target.isIntersecting) {
+        // TODO(12/31): 데이터 통신 테스트
+        // fetch('http://10.58.52.168:8000/products/')
         fetch('/data/productData.json')
           .then(res => res.json())
           .then(result => {
