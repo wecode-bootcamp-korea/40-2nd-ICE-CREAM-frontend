@@ -12,10 +12,10 @@ const ShopProduct = () => {
   };
 
   useEffect(() => {
-    fetch('http://10.58.52.168:8000/products/')
+    fetch('/data/productData.json')
       .then(res => res.json())
       .then(data => {
-        setShopProductList(data.data);
+        setShopProductList(data);
       });
   }, []);
 
