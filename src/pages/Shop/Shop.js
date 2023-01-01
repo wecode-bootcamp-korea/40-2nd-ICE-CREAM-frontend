@@ -28,7 +28,7 @@ const Shop = () => {
                 subCategory={subCategory}
                 className={`${isOpen ? '' : 'open'}`}
               >
-                {subCategory.title.map(({ subId, text }) => {
+                {subCategory.map(({ subId, text }) => {
                   return (
                     <AsideOpenCategoryItem key={subId}>
                       <AsideOpenCategoryInput id="option" type="checkbox" />
